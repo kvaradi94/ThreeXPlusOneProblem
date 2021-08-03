@@ -22,6 +22,12 @@ public class ThreeXPlusOneProblem {
     private static final BigInteger STEP = new BigInteger("1000");
 
     public static void main(String[] args) {
+        if(args.length != 0) {
+            testArgNumber(args[0]);
+            System.out.println("Max of the series: " +  Collections.max(series));
+            System.out.println("Size of the series: " + series.size());
+            return;
+        }
         final BigInteger startNumber = new BigInteger(START_NUMBER);
         final BigInteger endNumber = new BigInteger(END_NUMBER);
 
@@ -61,6 +67,29 @@ public class ThreeXPlusOneProblem {
             searchCounterExample(multipleThreeThenAddOne(inputNumber));
         }
         return false;
+    }
+
+    private static boolean searchCounterExample(BigInteger inputNumber, boolean testArgNumberFlag) {
+        if(isTheProcessingTakesTooLong()) {
+            return true;
+        }
+        if((boolean) testArgNumberFlag) {
+            System.out.println(inputNumber);
+        }
+        series.add(inputNumber);
+        if (divisible(inputNumber, TWO)) { //even
+            searchCounterExample(divide(inputNumber, TWO), testArgNumberFlag);
+        } else if (inputNumber.equals(ONE)) {
+            return false;
+        } else {
+            searchCounterExample(multipleThreeThenAddOne(inputNumber), testArgNumberFlag);
+        }
+        return false;
+    }
+
+    private static void testArgNumber(String arg) {
+        final BigInteger number = new BigInteger(arg);
+        searchCounterExample(number, true);
     }
 
     private static boolean isTheProcessingTakesTooLong()  {
