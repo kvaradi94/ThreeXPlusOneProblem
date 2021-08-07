@@ -25,18 +25,25 @@ public final class ThreeXPlusOneProblem {
     private ThreeXPlusOneProblem() {}
 
     public static void main(final String[] args) {
+	final String mode = args[0];
+	final String firstNumber = args[1];
         if (args.length == Constants.TEST_ONE_NUMBER) {
-            testArgNumber(args[0]);
+            testArgNumber(firstNumber);
             LOGGER.info("Max of the series: " + Collections.max(series));
             LOGGER.info("Size of the series: " + series.size());
             return;
         }
         if (args.length == Constants.TEST_AN_INTERVAL) {
-            startNumber = args[0];
-            endNumber = args[1];
+	    final String secondNumber = args[2];
+            startNumber = firstNumber;
+            endNumber = secondNumber;
         }
-
-        startInCli();
+        if (isCli(mode)) {
+            startInCli();
+        }
+        if (isChart(mode)) {
+            createChartForOneNumber();
+        }
     }
 
     private static void startInCli() {
@@ -65,6 +72,10 @@ public final class ThreeXPlusOneProblem {
             series.clear();
             firstIteration = false;
         }
+    }
+
+    private static void createChartForOneNumber() {
+        //TODO
     }
 
     private static boolean searchCounterExample(final BigInteger inputNumber) {
@@ -124,5 +135,12 @@ public final class ThreeXPlusOneProblem {
         return BigIntOperations.divide(diffOfStartAndEnd, BigInteger.TEN);
     }
 
+    private static boolean isCli(final String arg) {
+        return arg.equals(Constants.CLI_ARG_VALUE);
+    }
+
+    private static boolean isChart(final String arg) {
+        return arg.equals(Constants.CHART_FOR_TESTING_ONE_NUMBER_ARG_VALUE);
+    }
 
 }
