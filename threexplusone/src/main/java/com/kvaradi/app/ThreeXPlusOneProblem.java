@@ -13,12 +13,6 @@ public class ThreeXPlusOneProblem {
     private static List<Long> executionTimes = new ArrayList<>();
     private static long startTime;
     private static boolean firstIteration = true;
-    private static final BigInteger ZERO = BigInteger.ZERO;
-    private static final BigInteger ONE = BigInteger.ONE;
-    private static final BigInteger TWO = new BigInteger("2");
-    private static final BigInteger THREE = new BigInteger("3");
-    private static final int MULTIPLIER_FOR_MAXIMUM_TIMEOUT = 100;
-    private static final double DIVIDE_NANO_TO_GET_SEC = 1_000_000_000;
     private static String startNumber = "1";
     private static String endNumber = "10000";
     private static BigInteger step;
@@ -39,7 +33,7 @@ public class ThreeXPlusOneProblem {
         final BigInteger endNumber = new BigInteger(ThreeXPlusOneProblem.endNumber);
         step = calculateStep(startNumber, endNumber);
 
-        for (BigInteger i = startNumber; isLessOrEqual(i, endNumber); i = i.add(BigInteger.ONE)) {
+        for (BigInteger i = startNumber; BigIntOperations.isLessOrEqual(i, endNumber); i = i.add(BigInteger.ONE)) {
             startTime = System.nanoTime();
             if (searchCounterExample(i)) {
                 System.out.println("Possible counter example: ");
@@ -51,11 +45,11 @@ public class ThreeXPlusOneProblem {
             executionTimes.add(duration);
             maximums.add(Collections.max(series));
             lengths.add(series.size());
-            if (divisible(i, step)) {
+            if (BigIntOperations.divisible(i, step)) {
                 System.out.println("Progress: " + i + " from " + ThreeXPlusOneProblem.endNumber);
                 System.out.println("Max of maximums: " + Collections.max(maximums));
                 System.out.println("Max of lengths: " + Collections.max(lengths));
-                System.out.println("Max of execution times in sec: " + Collections.max(executionTimes) / DIVIDE_NANO_TO_GET_SEC);
+                System.out.println("Max of execution times in sec: " + Collections.max(executionTimes) / Constants.DIVIDE_NANO_TO_GET_SEC);
             }
             series.clear();
             firstIteration = false;
@@ -67,12 +61,12 @@ public class ThreeXPlusOneProblem {
             return true;
         }
         series.add(inputNumber);
-        if (divisible(inputNumber, TWO)) { //even
-            searchCounterExample(divide(inputNumber, TWO));
-        } else if (inputNumber.equals(ONE)) {
+        if (BigIntOperations.divisible(inputNumber, Constants.TWO)) { //even
+            searchCounterExample(BigIntOperations.divide(inputNumber, Constants.TWO));
+        } else if (inputNumber.equals(Constants.ONE)) {
             return false;
         } else {
-            searchCounterExample(multipleThreeThenAddOne(inputNumber));
+            searchCounterExample(BigIntOperations.multipleThreeThenAddOne(inputNumber));
         }
         return false;
     }
@@ -85,12 +79,12 @@ public class ThreeXPlusOneProblem {
             System.out.println(inputNumber);
         }
         series.add(inputNumber);
-        if (divisible(inputNumber, TWO)) { //even
-            searchCounterExample(divide(inputNumber, TWO), testArgNumberFlag);
-        } else if (inputNumber.equals(ONE)) {
+        if (BigIntOperations.divisible(inputNumber, Constants.TWO)) { //even
+            searchCounterExample(BigIntOperations.divide(inputNumber, Constants.TWO), testArgNumberFlag);
+        } else if (inputNumber.equals(Constants.ONE)) {
             return false;
         } else {
-            searchCounterExample(multipleThreeThenAddOne(inputNumber), testArgNumberFlag);
+            searchCounterExample(BigIntOperations.multipleThreeThenAddOne(inputNumber), testArgNumberFlag);
         }
         return false;
     }
@@ -104,7 +98,7 @@ public class ThreeXPlusOneProblem {
         if (!firstIteration) {
             final long currentTime = System.nanoTime();
             final long currentProcessTimeOnSpecificNumber = currentTime - startTime;
-            if (currentProcessTimeOnSpecificNumber > Collections.max(executionTimes) * MULTIPLIER_FOR_MAXIMUM_TIMEOUT) {
+            if (currentProcessTimeOnSpecificNumber > Collections.max(executionTimes) * Constants.MULTIPLIER_FOR_MAXIMUM_TIMEOUT) {
                 return true;
             }
         }
@@ -112,34 +106,12 @@ public class ThreeXPlusOneProblem {
     }
 
     private static BigInteger calculateStep(BigInteger start, BigInteger end) {
-        BigInteger diffOfStartAndEnd = subtract(end, start);
-        if (isLess(diffOfStartAndEnd, BigInteger.TEN)) {
+        BigInteger diffOfStartAndEnd = BigIntOperations.subtract(end, start);
+        if (BigIntOperations.isLess(diffOfStartAndEnd, BigInteger.TEN)) {
             return BigInteger.ONE;
         }
-        return divide(diffOfStartAndEnd, BigInteger.TEN);
+        return BigIntOperations.divide(diffOfStartAndEnd, BigInteger.TEN);
     }
 
-    private static boolean isLess(BigInteger firstNumber, BigInteger secondNumber) {
-        return firstNumber.compareTo(secondNumber) == -1;
-    }
 
-    private static boolean isLessOrEqual(BigInteger firstNumber, BigInteger secondNumber) {
-        return firstNumber.compareTo(secondNumber) == -1 || firstNumber.compareTo(secondNumber) == 0;
-    }
-
-    private static boolean divisible(BigInteger firstNumber, BigInteger secondNumber) {
-        return firstNumber.mod(secondNumber).equals(ZERO);
-    }
-
-    private static BigInteger divide(BigInteger firstNumber, BigInteger secondNumber) {
-        return firstNumber.divide(secondNumber);
-    }
-
-    private static BigInteger multipleThreeThenAddOne(BigInteger number) {
-        return number.multiply(THREE).add(ONE);
-    }
-
-    private static BigInteger subtract(BigInteger firstNumber, BigInteger secondNumber) {
-        return firstNumber.subtract(secondNumber);
-    }
 }
