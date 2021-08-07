@@ -1,4 +1,4 @@
 #!/bin/bash
 
 #after mvn clean install
-java -cp target/threexplusone-1.0-SNAPSHOT.jar com.kvaradi.app.ThreeXPlusOneProblem $1 $2
+mvn exec:java -Dexec.args="$1 $2"

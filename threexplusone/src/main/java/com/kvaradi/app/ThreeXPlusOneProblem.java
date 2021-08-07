@@ -1,5 +1,8 @@
 package com.kvaradi.app;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,16 +17,18 @@ public final class ThreeXPlusOneProblem {
     private static long startTime;
     private static boolean firstIteration = true;
     private static String startNumber = "1";
-    private static String endNumber = "10000";
+    private static String endNumber = "1000";
     private static BigInteger step;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ThreeXPlusOneProblem.class);
 
     private ThreeXPlusOneProblem() {}
 
     public static void main(final String[] args) {
         if (args.length == Constants.TEST_ONE_NUMBER) {
             testArgNumber(args[0]);
-            System.out.println("Max of the series: " + Collections.max(series));
-            System.out.println("Size of the series: " + series.size());
+            LOGGER.info("Max of the series: " + Collections.max(series));
+            LOGGER.info("Size of the series: " + series.size());
             return;
         }
         if (args.length == Constants.TEST_AN_INTERVAL) {
@@ -38,8 +43,8 @@ public final class ThreeXPlusOneProblem {
         for (BigInteger i = startNumber; BigIntOperations.isLessOrEqual(i, endNumber); i = i.add(BigInteger.ONE)) {
             startTime = System.nanoTime();
             if (searchCounterExample(i)) {
-                System.out.println("Possible counter example: ");
-                System.out.println(i);
+                LOGGER.info("Possible counter example: ");
+                LOGGER.info(i.toString());
                 break;
             }
             final long endTime = System.nanoTime();
@@ -48,10 +53,10 @@ public final class ThreeXPlusOneProblem {
             maximums.add(Collections.max(series));
             lengths.add(series.size());
             if (BigIntOperations.divisible(i, step)) {
-                System.out.println("Progress: " + i + " from " + ThreeXPlusOneProblem.endNumber);
-                System.out.println("Max of maximums: " + Collections.max(maximums));
-                System.out.println("Max of lengths: " + Collections.max(lengths));
-                System.out.println("Max of execution times in sec: " + Collections.max(executionTimes) / Constants.DIVIDE_NANO_TO_GET_SEC);
+                LOGGER.info("Progress: " + i + " from " + ThreeXPlusOneProblem.endNumber);
+                LOGGER.info("Max of maximums: " + Collections.max(maximums));
+                LOGGER.info("Max of lengths: " + Collections.max(lengths));
+                LOGGER.info("Max of execution times in sec: " + Collections.max(executionTimes) / Constants.DIVIDE_NANO_TO_GET_SEC);
             }
             series.clear();
             firstIteration = false;
@@ -78,7 +83,7 @@ public final class ThreeXPlusOneProblem {
             return true;
         }
         if (testArgNumberFlag) {
-            System.out.println(inputNumber);
+            LOGGER.info(inputNumber.toString());
         }
         series.add(inputNumber);
         if (BigIntOperations.divisible(inputNumber, Constants.TWO)) { //even
