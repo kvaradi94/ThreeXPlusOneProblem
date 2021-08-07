@@ -36,6 +36,10 @@ public final class ThreeXPlusOneProblem {
             endNumber = args[1];
         }
 
+        startInCli();
+    }
+
+    private static void startInCli() {
         final BigInteger startNumber = new BigInteger(ThreeXPlusOneProblem.startNumber);
         final BigInteger endNumber = new BigInteger(ThreeXPlusOneProblem.endNumber);
         step = calculateStep(startNumber, endNumber);
