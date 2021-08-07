@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class ThreeXPlusOneProblem {
+public final class ThreeXPlusOneProblem {
 
     private static List<BigInteger> series = new ArrayList<>();
     private static List<BigInteger> maximums = new ArrayList<>();
@@ -17,14 +17,16 @@ public class ThreeXPlusOneProblem {
     private static String endNumber = "10000";
     private static BigInteger step;
 
-    public static void main(String[] args) {
-        if (args.length == 1) {
+    private ThreeXPlusOneProblem() {}
+
+    public static void main(final String[] args) {
+        if (args.length == Constants.TEST_ONE_NUMBER) {
             testArgNumber(args[0]);
             System.out.println("Max of the series: " + Collections.max(series));
             System.out.println("Size of the series: " + series.size());
             return;
         }
-        if (args.length == 2) {
+        if (args.length == Constants.TEST_AN_INTERVAL) {
             startNumber = args[0];
             endNumber = args[1];
         }
@@ -56,7 +58,7 @@ public class ThreeXPlusOneProblem {
         }
     }
 
-    private static boolean searchCounterExample(BigInteger inputNumber) {
+    private static boolean searchCounterExample(final BigInteger inputNumber) {
         if (isTheProcessingTakesTooLong()) {
             return true;
         }
@@ -71,7 +73,7 @@ public class ThreeXPlusOneProblem {
         return false;
     }
 
-    private static boolean searchCounterExample(BigInteger inputNumber, boolean testArgNumberFlag) {
+    private static boolean searchCounterExample(final BigInteger inputNumber, final boolean testArgNumberFlag) {
         if (isTheProcessingTakesTooLong()) {
             return true;
         }
@@ -89,7 +91,7 @@ public class ThreeXPlusOneProblem {
         return false;
     }
 
-    private static void testArgNumber(String arg) {
+    private static void testArgNumber(final String arg) {
         final BigInteger number = new BigInteger(arg);
         searchCounterExample(number, true);
     }
@@ -105,8 +107,8 @@ public class ThreeXPlusOneProblem {
         return false;
     }
 
-    private static BigInteger calculateStep(BigInteger start, BigInteger end) {
-        BigInteger diffOfStartAndEnd = BigIntOperations.subtract(end, start);
+    private static BigInteger calculateStep(final BigInteger start, final BigInteger end) {
+        final BigInteger diffOfStartAndEnd = BigIntOperations.subtract(end, start);
         if (BigIntOperations.isLess(diffOfStartAndEnd, BigInteger.TEN)) {
             return BigInteger.ONE;
         }
