@@ -6,7 +6,9 @@ import org.slf4j.LoggerFactory;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Calculation {
 
@@ -16,17 +18,17 @@ public class Calculation {
     private final List<Long> executionTimes = new ArrayList<>();
     private long startTime;
     private boolean firstIteration = true;
-
     private String startNumber = "1";
-
     private String endNumber = "1000";
     private final Logger logger = LoggerFactory.getLogger(Calculation.class);
+    private Map<BigInteger, Boolean> alreadyVisitedNumbers = new HashMap<>();
 
     public void testInterval() {
         final BigInteger startNumber = new BigInteger(this.startNumber);
         final BigInteger endNumber = new BigInteger(this.endNumber);
         final BigInteger step = calculateStep(startNumber, endNumber);
 
+        final long startTimeOverall = System.nanoTime();
         for (BigInteger i = startNumber; BigIntOperations.isLessOrEqual(i, endNumber); i = i.add(BigInteger.ONE)) {
             startTime = System.nanoTime();
             if (searchCounterExample(i)) {
@@ -48,6 +50,9 @@ public class Calculation {
             series.clear();
             firstIteration = false;
         }
+        final long endTimeOverall = System.nanoTime();
+        final long durationOverall = (long) ((endTimeOverall - startTimeOverall) / Constants.DIVIDE_NANO_TO_GET_MS);
+        logger.info("Overall execution time: " + durationOverall + " ms.");
     }
 
     public void testArgNumber(final String arg) {
@@ -82,6 +87,10 @@ public class Calculation {
             return true;
         }
         series.add(inputNumber);
+        if (alreadyVisitedNumbers.containsKey(inputNumber)) { //this is the optimization 1-10000 takes 24ms without and 1.4 with this optimization
+            return false;
+        }
+        alreadyVisitedNumbers.put(inputNumber, true);
         if (BigIntOperations.divisible(inputNumber, Constants.TWO)) { //even
             searchCounterExample(BigIntOperations.divide(inputNumber, Constants.TWO));
         } else if (inputNumber.equals(Constants.ONE)) {
