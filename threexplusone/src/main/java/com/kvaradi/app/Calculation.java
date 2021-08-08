@@ -16,9 +16,10 @@ public class Calculation {
     private final List<Long> executionTimes = new ArrayList<>();
     private long startTime;
     private boolean firstIteration = true;
-    private String startNumber = "1";
-    private String endNumber = "1000";
 
+    private String startNumber = "1";
+
+    private String endNumber = "1000";
     private final Logger logger = LoggerFactory.getLogger(Calculation.class);
 
     public void testInterval() {
@@ -56,8 +57,8 @@ public class Calculation {
         logger.info("Size of the series: " + getSizeOfSeries());
     }
 
-    public void createChartForOneNumber() {
-        //TODO
+    public List<BigInteger> getSeries() {
+        return series;
     }
 
     public void setStartNumber(final String startNumber) {
