@@ -6,6 +6,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.ui.ApplicationFrame;
+import org.jfree.ui.RefineryUtilities;
 
 import java.util.Collections;
 
@@ -14,21 +15,9 @@ public class ChartGenerator extends ApplicationFrame {
     private final String firstNumber;
     final Calculation calculation = new Calculation();
 
-    public ChartGenerator(String applicationTitle, String chartTitle, String firstNumber) {
-        super(applicationTitle);
+    public ChartGenerator(String firstNumber) {
+        super(Constants.APPLICATION_TITLE);
         this.firstNumber = firstNumber;
-        calculation.testArgNumber(firstNumber);
-        final String categoryAxisLabel = "Max of the series: " + Collections.max(calculation.getSeries()) +
-                ", Size of the series: " + calculation.getSeries().size();
-        JFreeChart lineChart = ChartFactory.createLineChart(
-                chartTitle,
-                categoryAxisLabel, "Current value",
-                createDataset(),
-                PlotOrientation.VERTICAL,
-                true, true, false);
-
-        ChartPanel chartPanel = new ChartPanel(lineChart);
-        setContentPane(chartPanel);
     }
 
     public DefaultCategoryDataset createDataset() {
@@ -37,5 +26,23 @@ public class ChartGenerator extends ApplicationFrame {
             dataset.addValue(calculation.getSeries().get(i), "values", i);
         }
         return dataset;
+    }
+
+    public void generateChart() {
+        calculation.testArgNumber(firstNumber);
+        final String categoryAxisLabel = "Max of the series: " + Collections.max(calculation.getSeries()) +
+                ", Size of the series: " + calculation.getSeries().size();
+        JFreeChart lineChart = ChartFactory.createLineChart(
+                "Calculating 3x+1 series for number: " + firstNumber,
+                categoryAxisLabel, "Current value",
+                createDataset(),
+                PlotOrientation.VERTICAL,
+                true, true, false);
+
+        ChartPanel chartPanel = new ChartPanel(lineChart);
+        setContentPane(chartPanel);
+        this.pack();
+        RefineryUtilities.centerFrameOnScreen(this);
+        this.setVisible(true);
     }
 }

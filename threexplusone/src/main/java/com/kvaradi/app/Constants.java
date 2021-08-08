@@ -14,4 +14,5 @@ import java.math.BigInteger;
     /* default */ static final int TEST_AN_INTERVAL = 3; //run app with 2 number + 1 mode arg
     /* default */ static final String CLI_ARG_VALUE = "cli";
     /* default */ static final String CHART_FOR_TESTING_ONE_NUMBER_ARG_VALUE = "chart";
+    /* default */ static final String APPLICATION_TITLE = "3x + 1 Problem";
 }

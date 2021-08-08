@@ -1,7 +1,5 @@
 package com.kvaradi.app;
 
-import org.jfree.ui.RefineryUtilities;
-
 public final class ThreeXPlusOneProblem {
 
     private ThreeXPlusOneProblem() {}
@@ -16,13 +14,8 @@ public final class ThreeXPlusOneProblem {
                 calculation.testArgNumber(firstNumber);
                 return;
             } else if(isChartMode) {
-                ChartGenerator chartGenerator = new ChartGenerator(
-                        "3x + 1 Problem",
-                        "Calculating 3x+1 series for number: " + firstNumber, firstNumber);
-
-                chartGenerator.pack();
-                RefineryUtilities.centerFrameOnScreen(chartGenerator);
-                chartGenerator.setVisible(true);
+                ChartGenerator chartGenerator = new ChartGenerator(firstNumber);
+                chartGenerator.generateChart();
             }
         }
         if (args.length == Constants.TEST_AN_INTERVAL && isCliMode) {
