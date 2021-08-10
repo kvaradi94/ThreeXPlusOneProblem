@@ -29,4 +29,8 @@ import java.math.BigInteger;
     /* default */ static BigInteger subtract(final BigInteger firstNumber, final BigInteger secondNumber) {
         return firstNumber.subtract(secondNumber);
     }
+
+    /* default */ static BigInteger add(final BigInteger firstNumber, final BigInteger secondNumber) {
+        return firstNumber.add(secondNumber);
+    }
 }

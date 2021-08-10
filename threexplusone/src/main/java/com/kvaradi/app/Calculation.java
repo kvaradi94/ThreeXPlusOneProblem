@@ -12,16 +12,17 @@ import java.util.Map;
 
 public class Calculation {
 
-    private final List<BigInteger> series = new ArrayList<>();
-    private final List<BigInteger> maximums = new ArrayList<>();
-    private final List<Integer> lengths = new ArrayList<>();
-    private final List<Long> executionTimes = new ArrayList<>();
-    private long startTime;
-    private boolean firstIteration = true;
-    private String startNumber = "1";
-    private String endNumber = "1000";
-    private final Logger logger = LoggerFactory.getLogger(Calculation.class);
-    private Map<BigInteger, Boolean> alreadyVisitedNumbers = new HashMap<>();
+    private final transient List<BigInteger> series = new ArrayList<>();
+    private final transient List<BigInteger> maximums = new ArrayList<>();
+    private final transient List<Long> executionTimes = new ArrayList<>();
+    private final transient List<BigInteger> numbersInTheInterval = new ArrayList<>();
+    private final transient Map<BigInteger, Integer> xSeriesLength = new HashMap<>();
+    private transient long startTime;
+    private transient boolean firstIteration = true;
+    private transient String startNumber = "1";
+    private transient String endNumber = "1000";
+    private final transient Logger logger = LoggerFactory.getLogger(Calculation.class);
+    private final transient Map<BigInteger, Boolean> alreadyVisitedNumbers = new HashMap<>();
 
     public void testInterval() {
         final BigInteger startNumber = new BigInteger(this.startNumber);
@@ -31,6 +32,7 @@ public class Calculation {
         final long startTimeOverall = System.nanoTime();
         for (BigInteger i = startNumber; BigIntOperations.isLessOrEqual(i, endNumber); i = i.add(BigInteger.ONE)) {
             startTime = System.nanoTime();
+            numbersInTheInterval.add(i);
             if (searchCounterExample(i)) {
                 logger.info("Possible counter example: ");
                 logger.info(i.toString());
@@ -40,11 +42,11 @@ public class Calculation {
             final long duration = endTime - startTime;
             executionTimes.add(duration);
             maximums.add(Collections.max(series));
-            lengths.add(series.size());
+            xSeriesLength.put(i, series.size());
             if (BigIntOperations.divisible(i, step)) {
                 logger.info("Progress: " + i + " from " + endNumber);
                 logger.info("Max of maximums: " + Collections.max(maximums));
-                logger.info("Max of lengths: " + Collections.max(lengths));
+                logger.info("Max of lengths: " + Collections.max(xSeriesLength.values()));
                 logger.info("Max of execution times in sec: " + Collections.max(executionTimes) / Constants.DIVIDE_NANO_TO_GET_SEC);
             }
             series.clear();
@@ -64,6 +66,10 @@ public class Calculation {
 
     public List<BigInteger> getSeries() {
         return series;
+    }
+
+    public Map<BigInteger, Integer> getXSeriesLength() {
+        return xSeriesLength;
     }
 
     public void setStartNumber(final String startNumber) {

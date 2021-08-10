@@ -14,15 +14,19 @@ public final class ThreeXPlusOneProblem {
                 calculation.testArgNumber(firstNumber);
                 return;
             } else if(isChartMode) {
-                ChartGenerator chartGenerator = new ChartGenerator(firstNumber);
-                chartGenerator.generateChart();
+                final ChartGenerator chartGenerator = new ChartGenerator(firstNumber);
+                chartGenerator.generateBasicLineChart(DataKinds.ONE_NUMBER);
             }
         }
         if (args.length == Constants.TEST_AN_INTERVAL && isCliMode) {
-	    final String secondNumber = args[2];
+            final String secondNumber = args[2];
             calculation.setStartNumber(firstNumber);
             calculation.setEndNumber(secondNumber);
             calculation.testInterval();
+        } else if(isChartMode) {
+            final String secondNumber = args[2];
+            final ChartGenerator chartGenerator = new ChartGenerator(firstNumber, secondNumber);
+            chartGenerator.generateBasicLineChart(DataKinds.INTERVAL_MAX_LENGTH_FOR_EACH_NUMBER);
         }
     }
 
