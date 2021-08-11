@@ -1,5 +1,9 @@
 package com.kvaradi.app;
 
+import com.kvaradi.app.chartbuilder.BasicLineChartBuilder;
+import com.kvaradi.app.chartbuilder.AbstractChartBuilder;
+import com.kvaradi.app.chartbuilder.MaxValueInEachStepChartBuilder;
+
 public final class ThreeXPlusOneProblem {
 
     private ThreeXPlusOneProblem() {}
@@ -14,8 +18,8 @@ public final class ThreeXPlusOneProblem {
                 calculation.testArgNumber(firstNumber);
                 return;
             } else if(isChartMode) {
-                final ChartGenerator chartGenerator = new ChartGenerator(firstNumber);
-                chartGenerator.generateBasicLineChart(DataKinds.ONE_NUMBER);
+                final AbstractChartBuilder chartGenerator = new BasicLineChartBuilder(firstNumber);
+                chartGenerator.generateChart();
             }
         }
         if (args.length == Constants.TEST_AN_INTERVAL && isCliMode) {
@@ -23,10 +27,10 @@ public final class ThreeXPlusOneProblem {
             calculation.setStartNumber(firstNumber);
             calculation.setEndNumber(secondNumber);
             calculation.testInterval();
-        } else if(isChartMode) {
+        } else if(args.length == Constants.TEST_AN_INTERVAL && isChartMode) {
             final String secondNumber = args[2];
-            final ChartGenerator chartGenerator = new ChartGenerator(firstNumber, secondNumber);
-            chartGenerator.generateBasicLineChart(DataKinds.INTERVAL_MAX_LENGTH_FOR_EACH_NUMBER);
+            final AbstractChartBuilder chartGenerator = new MaxValueInEachStepChartBuilder(firstNumber, secondNumber);
+            chartGenerator.generateChart();
         }
     }
 
